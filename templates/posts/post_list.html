@@ -1,9 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 {% for post in posts %}
-<h3>{{post.title}}</h3>
-<p>{{post.content}}</p>
-<p>{{post.rate}}</p>
-<p>{{post.created_at}}</p>
+<div class="card" style="width: 18rem; margin-left: 10px;">
+{% if post.image %}
+    <img src="{{ post.image.url }}" alt="Post image">
+{% else %}
+    <img src="{% static 'placeholder.png' %}" alt="Post image">
+{% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ post.title }}</h5>
+    <p class="card-text">{{ post.content }}</p>
+    <a href="/posts/{{post.id}}" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
 {% endfor %}
 {% endblock %}
