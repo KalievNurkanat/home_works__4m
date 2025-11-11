@@ -19,7 +19,7 @@ class PostForm(forms.Form):
         image = cleaned_data.get("image")
         name = image.name.split(".")[-1]
         if name not in ["jpeg", "jpg"]:
-            raise forms.ValidationError(".jpeg and .jpg images are not allowed")
+            raise forms.ValidationError(".jpeg and .jpg images are allowed")
         return image
     
 class PostForm2(forms.ModelForm):
