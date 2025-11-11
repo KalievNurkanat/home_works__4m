@@ -36,7 +36,7 @@ def post_create_view(request):
             return render(request, "posts/post_create.html", context={"form":form})
         
         try:
-           form.save
+           form.save()
            return redirect("/posts")
         except Exception as x:
             return HttpResponse (f"Error {x}")
