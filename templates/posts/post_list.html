@@ -9,6 +9,7 @@
     <img src="{% static 'placeholder.png' %}" alt="Post image">
 {% endif %}
   <div class="card-body">
+    <h7 class="card-title">{{ post.category }}</h7>
     <h5 class="card-title">{{ post.title }}</h5>
     <p class="card-text">{{ post.content }}</p>
     <a href="/posts/{{post.id}}" class="btn btn-primary">Go somewhere</a>
