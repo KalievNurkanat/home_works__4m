@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from random import randint
 from posts.models import Post
-from posts.forms import PostForm
+from posts.forms import PostForm2
 
 # Create your views here.
 def home_view(request):
@@ -28,15 +28,15 @@ def post_detail_view(request, post_id):
     
 def post_create_view(request):
     if request.method == "GET":
-        form = PostForm
+        form = PostForm2
         return render(request, "posts/post_create.html", context={"form":form})
     if request.method == "POST":
-        title = request.POST.get("title")
-        content = request.POST.get("content")
-        rate = request.POST.get("rate")
-        image = request.FILES.get("image")
+        form = PostForm2(request.POST, request.FILES)
+        if not form.is_valid():
+            return render(request, "posts/post_create.html", context={"form":form})
+        
         try:
-           post = Post.objects.create(title=title, content=content, rate=rate, image=image)
+           form.save
            return redirect("/posts")
         except Exception as x:
             return HttpResponse (f"Error {x}")
