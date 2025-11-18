@@ -1,5 +1,6 @@
 from django import forms
 from posts.views import Post
+from posts.models import Category, Tag
 
 class PostForm(forms.Form):
     image = forms.ImageField(label="Image")
@@ -42,3 +43,9 @@ class PostForm2(forms.ModelForm):
         if name not in ["jpeg", "jpg"]:
             raise forms.ValidationError(" only .jpeg and .jpg images are allowed")
         return image
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(label="Search", required=False)
+    category_id = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
+    tags_ids = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
