@@ -49,3 +49,15 @@ class SearchForm(forms.Form):
     search = forms.CharField(label="Search", required=False)
     category_id = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
     tags_ids = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
+    orderings = (("rate", "By rate"),
+                  ("-rate", "By in descended rate"),
+                  ("title", "By name"),
+                   ("-title", "By in descended name"),
+                   ("created_at", "By craeted date"),
+                   ("-created_at", "by in descended created date"),
+                   ("updated_at", "By updated date"),
+                   ("-updated_at", "By in descended updated date"),
+                   (None, "without orders")
+
+                   )
+    ordering = forms.ChoiceField(choices=orderings, required=False)
