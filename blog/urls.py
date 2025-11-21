@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from posts.views import test_view, html_views, post_list_view, home_view, post_detail_view, post_create_view
-from users.views import register_view, login_view, logout_view
+from posts.views import test_view, html_views, post_list_view, home_view, PostCreateView, PostDetailView, TestView, PostListView, post_detail_view, post_create_view, post_update_view
+from users.views import register_view, login_view, logout_view, profile_view
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -25,8 +25,15 @@ user_patterns = [
     path("register/", register_view),
     path("login/", login_view),
     path("logout/", logout_view),
+    path("profile/", profile_view),
 ]
 
+class_views = [
+    path("test_class/", TestView.as_view()),
+    path("posts/class/", PostListView.as_view()),
+    path("posts/<int:pk>/class/", PostDetailView.as_view()),
+    path("posts/create/class", PostCreateView.as_view()),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +42,6 @@ urlpatterns = [
     path("posts/", post_list_view),
     path("", home_view),
     path("posts/<int:post_id>/", post_detail_view),
-    path("posts/create/", post_create_view)
-] + user_patterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("posts/create/", post_create_view),
+    path("posts/<int:post_id>/update", post_update_view),
+] + user_patterns + class_views + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

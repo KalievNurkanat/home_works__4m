@@ -4,6 +4,14 @@ from posts.models import Post
 from posts.forms import PostForm2, SearchForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView
+
+
+class TestView(View):
+    def get(self,request):
+        return HttpResponse("Hello world")
+
 
 # Create your views here.
 def home_view(request):
@@ -56,12 +64,22 @@ def post_list_view(request):
                                   })
 
 
+class PostListView(ListView):
+    model = Post
+    template_name = "posts/post_list.html"
+    context_object_name = "posts"
+
+
 @login_required(login_url="/login/")
 def post_detail_view(request, post_id):
     if request.method == "GET":
         post = Post.objects.get(id=post_id)
         return render(request, "posts/post_detail.html", context={"post": post})
 
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "posts/post_detail.html"
+    context_object_name = "post"
 
 @login_required(login_url="/login/")
 def post_create_view(request):
@@ -78,5 +96,28 @@ def post_create_view(request):
            return redirect("/posts")
         except Exception as x:
             return HttpResponse (f"Error {x}")
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm2
+    template_name = "posts/post_create.html"
+    success_url = "/posts"
+
+
+
+@login_required(login_url="/login/")
+def post_update_view(request, post_id):
+    post = Post.objects.get(id=post_id, author=request.user)
+    if request.method == "GET":
+        form = PostForm2(instance=post)
+        return render(request, "posts/post_update.html", context={"post":post, 
+                                                                  "form":form})
+    if request.method == "POST":
+        form = PostForm2(request.POST, request.FILES, instance=post)
+        if not form.is_valid():
+            return render(request, "posts/post_update.html", context={"form":form})
+        
+        form.save()
+        return redirect("/profile")
 
 

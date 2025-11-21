@@ -15,13 +15,6 @@ class PostForm(forms.Form):
             raise forms.ValidationError("USA is a dangerous to live")
         return title
     
-    def clean_image(self):
-        cleaned_data = super().clean()
-        image = cleaned_data.get("image")
-        name = image.name.split(".")[-1]
-        if name not in ["jpeg", "jpg"]:
-            raise forms.ValidationError("only .jpeg and .jpg images are allowed")
-        return image
     
 class PostForm2(forms.ModelForm):
 
@@ -35,14 +28,7 @@ class PostForm2(forms.ModelForm):
         if title.lower() == "usa":
             raise forms.ValidationError("USA is a dangerous to live")
         return title
-    
-    def clean_image(self):
-        cleaned_data = super().clean()
-        image = cleaned_data.get("image")
-        name = image.name.split(".")[-1]
-        if name not in ["jpeg", "jpg"]:
-            raise forms.ValidationError(" only .jpeg and .jpg images are allowed")
-        return image
+   
 
 
 class SearchForm(forms.Form):
